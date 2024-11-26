@@ -6,7 +6,7 @@ export function up(knex) {
   return knex.schema.createTable("tasks", (table) => {
     table.increments("id").primary();
     table
-      .integer("rewards_id")
+      .integer("reward_id")
       .unsigned()
       .references("id")
       .onUpdate("CASCADE")
