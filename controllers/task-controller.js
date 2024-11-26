@@ -2,23 +2,25 @@ import initKnex from "knex";
 import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 
-const index = async (_req, res) => {
+const index = async (req, res) => {
   const { s } = req.query;
   try {
     const query = knex("tasks")
-      .join("rewards", "tasks.reward_id", "rewards.id")
+      // .join()
       .select(
         "tasks.id",
-        "rewards.name",
-        "tasks.name",
+        "tasks.task_name",
         "tasks.description",
-        "tasks.stars"
-      );
+        "tasks.stars_required"
+        // "rewards.rewards_id",
+        // knex.raw("JSON_ARRAYAGG(rewards.reward_name) as rewards")
+      )
+      // .groupBy("tasks.id");
 
     if (s) {
       query.where(function () {
-        this.where("tasks.name", "like", `%${s}%`)
-          .orWhere("rewards.name", "like", `%${s}%`)
+        this.where("tasks.task_name", "like", `%${s}%`)
+          .orWhere("rewards.reward_name", "like", `%${s}%`)
           .orWhere("tasks.description", "like", `%${s}%`)
           .orWhere("tasks.stars", "like", `%${s}%`);
       });

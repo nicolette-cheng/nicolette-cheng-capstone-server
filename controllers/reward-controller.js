@@ -10,7 +10,7 @@ const index = async (req, res) => {
       "id",
       "reward_name",
       "description",
-      "stars"
+      "stars_required"
     );
 
     if (s) {
