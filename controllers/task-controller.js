@@ -35,9 +35,18 @@ const index = async (req, res) => {
 
 const getSingleTask = async (req, res) => {
   try {
-    const taskFound = await knex("tasks").where({
-      id: req.params.id,
-    });
+    const taskFound = await knex("tasks")
+      .select(
+        "id",
+        "task_name",
+        "description",
+        "stars_required",
+        knex.raw("DATE(created_at) as created_at"),
+        knex.raw("DATE(updated_at) as updated_at")
+      )
+      .where({
+        id: req.params.id,
+      });
 
     if (taskFound.length === 0) {
       return res.status(404).json({
