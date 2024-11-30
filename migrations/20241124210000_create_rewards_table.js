@@ -9,10 +9,10 @@ export function up(knex) {
     table.string("description").notNullable();
     table.integer("stars_required").notNullable().defaultTo(0);
     table.integer("stars_allocated").notNullable().defaultTo(0);
-    table.timestamp("created_at").defaultTo(knex.fn.now());
+    table.date("created_at").defaultTo(knex.fn.now());
     table
-      .timestamp("updated_at")
-      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
+      .date("updated_at")
+      .defaultTo(knex.raw("CURRENT_DATE"));
   });
 }
 

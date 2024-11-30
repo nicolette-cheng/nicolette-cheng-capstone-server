@@ -14,10 +14,8 @@ export function up(knex) {
     table.string("task_name").notNullable();
     table.string("description").notNullable();
     table.integer("stars_required").notNullable();
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-    table
-      .timestamp("updated_at")
-      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
+    table.date("created_at").defaultTo(knex.raw("CURRENT_DATE"));
+    table.date("updated_at").defaultTo(knex.raw("CURRENT_DATE"));
   });
 }
 
