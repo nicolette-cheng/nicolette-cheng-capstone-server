@@ -14,8 +14,8 @@ const index = async (req, res) => {
         "tasks.stars_required"
         // "rewards.rewards_id",
         // knex.raw("JSON_ARRAYAGG(rewards.reward_name) as rewards")
-      )
-      // .groupBy("tasks.id");
+      );
+    // .groupBy("tasks.id");
 
     if (s) {
       query.where(function () {
@@ -33,4 +33,29 @@ const index = async (req, res) => {
   }
 };
 
-export { index };
+const getSingleTask = async (req, res) => {
+  try {
+    const taskFound = await knex("tasks").where({
+      id: req.params.id,
+    });
+
+    if (taskFound.length === 0) {
+      return res.status(404).json({
+        message: `Task with ID ${req.params.id} not found`,
+      });
+    }
+
+    const taskData = taskFound[0];
+    res.json(taskData);
+  } catch (error) {
+    res.status(500).json({
+      message: `Unacle to retrieve task data for task with ID ${req.params.id}`,
+    });
+  }
+};
+
+// const createTaskItem = async (req,res) => {
+
+// }
+
+export { index, getSingleTask };
