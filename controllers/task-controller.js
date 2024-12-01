@@ -6,16 +6,14 @@ const index = async (req, res) => {
   const { s } = req.query;
   try {
     const query = knex("tasks")
-      // .join()
+      .join("rewards", "tasks.reward_id", "rewards.id")
       .select(
         "tasks.id",
         "tasks.task_name",
         "tasks.description",
-        "tasks.stars_required"
-        // "rewards.rewards_id",
-        // knex.raw("JSON_ARRAYAGG(rewards.reward_name) as rewards")
+        "tasks.stars_required",
+        "rewards.reward_name"
       );
-    // .groupBy("tasks.id");
 
     if (s) {
       query.where(function () {
@@ -63,8 +61,34 @@ const getSingleTask = async (req, res) => {
   }
 };
 
-// const createTaskItem = async (req,res) => {
+const createTaskItem = async (req, res) => {
+  const { task_name, description, category, status } = req.body;
+  const starsQuantity = Number(req.body.star_required);
 
-// }
+  if (
+    !task_name?.trim() ||
+    !description?.trim() ||
+    !starsQuantity === undefined ||
+    !isNaN(starsQuantity)
+  ) {
+    return res.status(400).json({
+      message:
+        "Invalid or missing data in request body. Please ensure all field are correctly entered and the stars required quantity is a number value.",
+    });
+  }
 
-export { index, getSingleTask };
+  try {
+    const newTask = {
+      task_name,
+      description,
+      starsQuantity,
+    };
+
+    const [newTaskId] = await knex("tasks").insert(newTask).returning("*");
+    res.status(201).json({ id: newTaskId, ...newTask });
+  } catch (error) {
+    res.status(500).send(`Error creating new task: ${error}`);
+  }
+};
+
+export { index, getSingleTask, createTaskItem };
