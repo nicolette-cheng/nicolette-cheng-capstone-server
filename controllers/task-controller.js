@@ -62,14 +62,14 @@ const getSingleTask = async (req, res) => {
 };
 
 const createTaskItem = async (req, res) => {
-  const { task_name, description, category, status } = req.body;
-  const starsQuantity = Number(req.body.star_required);
+  const { task_name, description, reward_id, stars_required } = req.body;
+  const stars = Number(stars_required);
 
   if (
     !task_name?.trim() ||
     !description?.trim() ||
-    !starsQuantity === undefined ||
-    !isNaN(starsQuantity)
+    !Number.isInteger(stars) ||
+    !reward_id
   ) {
     return res.status(400).json({
       message:
@@ -78,13 +78,24 @@ const createTaskItem = async (req, res) => {
   }
 
   try {
+    const rewardExists = await knex("rewards")
+      .select("id")
+      .where("id", reward_id)
+      .first();
+
+    if (!rewardExists) {
+      return res.status(400).json({ message: "Invalid reward_id" });
+    }
+
     const newTask = {
+      reward_id,
       task_name,
       description,
-      starsQuantity,
+      stars_required: stars,
     };
 
-    const [newTaskId] = await knex("tasks").insert(newTask).returning("*");
+    const [newTaskId] = await knex("tasks").insert(newTask);
+
     res.status(201).json({ id: newTaskId, ...newTask });
   } catch (error) {
     res.status(500).send(`Error creating new task: ${error}`);
