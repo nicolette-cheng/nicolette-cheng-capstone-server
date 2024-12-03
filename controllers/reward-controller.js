@@ -58,4 +58,34 @@ const getSingleReward = async (req, res) => {
   }
 };
 
-export { index, getSingleReward };
+const createRewardItem = async (req, res) => {
+  const { reward_name, description, stars_required } = req.body;
+  const stars = Number(stars_required);
+
+  if (
+    !reward_name?.trim() ||
+    !description?.trim() ||
+    !Number.isInteger(stars)
+  ) {
+    return res.status(400).json({
+      message:
+        "Invalid or missing data in request body. Please ensure all field are correctly entered and the stars required quantity is a number value.",
+    });
+  }
+
+  try {
+    const newReward = {
+      reward_name,
+      description,
+      stars_required: stars,
+    };
+
+    const [newRewardId] = await knex("reward").insert(newReward);
+
+    res.status(201).json({ id: newRewardId, ...newReward });
+  } catch (error) {
+    res.status(500).send(`Error creating new reward: ${error}`);
+  }
+};
+
+export { index, getSingleReward, createRewardItem };
