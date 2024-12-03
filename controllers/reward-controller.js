@@ -80,7 +80,7 @@ const createRewardItem = async (req, res) => {
       stars_required: stars,
     };
 
-    const [newRewardId] = await knex("reward").insert(newReward);
+    const [newRewardId] = await knex("rewards").insert(newReward);
 
     res.status(201).json({ id: newRewardId, ...newReward });
   } catch (error) {
