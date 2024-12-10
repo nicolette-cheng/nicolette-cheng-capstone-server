@@ -102,4 +102,70 @@ const createTaskItem = async (req, res) => {
   }
 };
 
-export { index, getSingleTask, createTaskItem };
+const editTaskItem = async (req, res) => {
+  const { task_name, description, reward_id, stars_required } = req.body;
+  const stars = Number(stars_required);
+	const { id } = req.params;
+
+	if (
+    !task_name?.trim() ||
+    !description?.trim() ||
+    !Number.isInteger(stars) ||
+    !reward_id
+  ) {
+		return res.status(400).json({
+			message:
+				"Invalid or missing data in request body. Please ensure all field are correctly entered and the stars required quantity is a number value.",
+		});
+	}
+
+	try {
+		const rewardExists = await knex("rewards")
+			.select("id")
+			.where("id", reward_id)
+			.first();
+
+		if (!rewardExists) {
+			return res.status(400).json({ message: "Invalid reward_id" });
+		}
+
+		const taskItemExists = await knex("tasks")
+			.select("id")
+			.where("id", id)
+			.first();
+
+		if (!taskItemExists) {
+			return res
+				.status(404)
+				.json({ message: `Task item with ID ${id} not found.` });
+		}
+
+		const updatedItem = {
+			reward_id,
+			task_name,
+			description,
+			stars_required,
+		};
+
+		await knex("tasks").where("id", id).update(updatedItem);
+
+		const selectedTaskFields = [
+			"id",
+			"reward_id",
+			"task_name",
+			"description",
+			"stars_required"
+		];
+
+		const updatedTaskItem = await knex("tasks")
+			.select(...selectedTaskFields)
+			.where("id", id)
+			.first();
+
+		res.status(200).json({ ...updatedTaskItem });
+	} catch (error) {
+		res.status(500).send(`Error editing task item: ${error}`);
+	}
+};
+
+export { index, getSingleTask, createTaskItem, editTaskItem };
