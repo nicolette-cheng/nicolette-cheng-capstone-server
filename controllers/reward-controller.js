@@ -88,4 +88,64 @@ const createRewardItem = async (req, res) => {
   }
 };
 
-export { index, getSingleReward, createRewardItem };
+const editRewardItem = async (req, res) => {
+  const { reward_name, description, stars_required } = req.body;
+  const stars = Number(stars_required);
+  const { id } = req.params;
+
+  // Validation checks
+  if (!reward_name?.trim() || !description?.trim() || !Number.isInteger(stars)) {
+    return res.status(400).json({
+      message: "Invalid or missing data in request body. Please ensure all fields are correctly entered and the stars required quantity is a number value."
+    });
+  }
+
+  try {
+    // Check if reward exists
+    const rewardItemExists = await knex("rewards")
+      .select("id")
+      .where({ id })
+      .first();
+
+    if (!rewardItemExists) {
+      return res.status(404).json({ 
+        message: `Reward item with ID ${id} not found.` 
+      });
+    }
+
+    // Prepare update data with stars conversion
+    const updatedItem = {
+      reward_name: reward_name.trim(),
+      description: description.trim(),
+      stars_required: stars,
+      updated_at: knex.fn.now() // Add timestamp for update
+    };
+
+    // Perform update
+    await knex("rewards")
+      .where({ id })
+      .update(updatedItem);
+
+    // Fetch updated reward
+    const updatedRewardItem = await knex("rewards")
+      .select([
+        "id",
+        "reward_name",
+        "description",
+        "stars_required",
+        knex.raw("DATE(updated_at) as updated_at")
+      ])
+      .where({ id })
+      .first();
+
+    res.status(200).json(updatedRewardItem);
+  } catch (error) {
+    console.error("Error updating reward:", error); // Add logging
+    res.status(500).json({ 
+      message: "Error editing reward item", 
+      error: error.message 
+    });
+  }
+};
+
+export { index, getSingleReward, createRewardItem, editRewardItem };

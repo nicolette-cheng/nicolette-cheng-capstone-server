@@ -8,6 +8,6 @@ router
   .get(rewardController.index)
   .post(rewardController.createRewardItem);
 
-router.route("/:id").get(rewardController.getSingleReward);
+router.route("/:id").get(rewardController.getSingleReward).put(rewardController.editRewardItem);
 
 export default router;
