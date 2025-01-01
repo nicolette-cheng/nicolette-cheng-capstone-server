@@ -4,16 +4,11 @@
  */
 export function up(knex) {
   return knex.schema.createTable("glimmers", (table) => {
-    table.increments("id").primary();
-    table
-      .integer("glimmer_id")
-      .unsigned()
-      .references("id")
-      .onUpdate("CASCADE")
-      .onDelete("CASCADE");
-    table.date("created_at").defaultTo(knex.raw("CURRENT_DATE"));
-    table.string("entry").notNullable();
-    // ***need to add a column to automate 1 star per entry
+    table.increments("id").primary()
+    .string("entry", 1000).notNullable()
+    .integer("stars_earned").defaultTo(1).notNullable()
+    .timestamp("created_at").defaultTo(knex.fn.now()).notNullable()
+    .timestamp("updated_at").defaultTo(knex.fn.now()).notNullable();
   });
 }
 
