@@ -4,55 +4,49 @@
  */
 
 export async function seed(knex) {
-    await knex("glimmers").del();
-    await knex("glimmers").insert([
-      {
-        id: 1,
-        reward_name: "Brunch at Foundry Tavern",
-        description:
-          "Book a brunch reso at Foundry Tavern for AYCE brunch $40/pp",
-        stars_required: 10,
-        stars_allocated: 0,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      },
-      {
-        id: 2,
-        reward_name: "Upgrade desk: buy macbook dock",
-        description:
-          "Invest in a dock for my Macbook air to have a cleaner desk setup",
-        stars_required: 8,
-        stars_allocated: 0,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      },
-      {
-        id: 3,
-        reward_name: "Hotpot dinner",
-        description: "Have a boujee hotpot dinner at home",
-        stars_required: 8,
-        stars_allocated: 0,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      },
-      {
-        id: 4,
-        reward_name: "Vancouver trip",
-        description: "Go to Vancouver to visit Katie",
-        stars_required: 50,
-        stars_allocated: 0,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      },
-      {
-        id: 5,
-        reward_name: "Buy Hades 2",
-        description: "Buy the Hades 2 game on steam",
-        stars_required: 15,
-        stars_allocated: 0,
-        created_at: knex.fn.now(),
-        updated_at: knex.fn.now(),
-      },
-    ]);
-  }
-  
+  await knex("glimmers").del();
+  await knex("glimmers").insert([
+    {
+      id: 1,
+      created_at: "2024-12-14 09:00:00", // YYYY-MM-DD HH:MM:SS format
+      updated_at: "2025-01-01 09:00:00",
+      entry:
+        "1st full day in Copenhagen - went to the city centre with Ingrid, Tom and Andy. We came across a Danish spitz that looks a lot like Pudding! We had some bomb Asian food like pho and corn cheese hotteok.",
+    },
+    {
+      id: 2,
+      created_at: "2024-12-15 14:30:00",
+      updated_at: "2025-01-01 14:30:00",
+      entry:
+        "It's Andy's last night in Copenhagen, we had hot put for dinner and played the boardgames Unmatched and Priorities together.",
+    },
+    {
+      id: 3,
+      created_at: "2024-12-16 14:30:00",
+      updated_at: "2025-01-01 14:30:00",
+      entry:
+        "I went to IKEA with Ingrid for brunch, the food is even better than back home in Canada. The highlight was the croissant, I was shocked at how good the croissants are!!",
+    },
+    {
+      id: 4,
+      created_at: "2024-12-17 14:30:00",
+      updated_at: "2025-01-01 14:30:00",
+      entry:
+        "Went to the Arhoj ceramics studio by the harbour today, Ingrid 'gifted' me 2x cute ceremic nuggets!",
+    },
+    {
+      id: 5,
+      created_at: "2024-12-18 14:30:00",
+      updated_at: "2025-01-01 14:30:00",
+      entry:
+        "Ingrid and I binged through the available Dandadan episodes, I really like the show.",
+    },
+    {
+      id: 6,
+      created_at: "2025-12-31 14:30:00",
+      updated_at: "2025-01-01 14:30:00",
+      entry:
+        "Went to the underground bar for Danish tapas and beers with Tom & Ingrid, turns out I quite like Danish bread that is more like a toasted cracker to me.",
+    },
+  ]);
+}
