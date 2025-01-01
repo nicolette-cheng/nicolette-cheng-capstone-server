@@ -7,13 +7,13 @@ const index = async (req, res) => {
 
   try {
     const query = knex("glimmers")
-      .select(
-        "id",
-        "entry",
-        "stars_earned",
-        knex.raw("DATE(created_at) as entry_date")
-      )
-      .orderBy("created_at", "desc");
+    .select(
+      "id",
+      "entry",
+      "stars_earned",
+      knex.raw("DATE_FORMAT(created_at, '%Y-%m-%d') as entry_date")  // Format date as YYYY-MM-DD
+    )
+    .orderBy("created_at", "desc");
 
     if (date) {
       // Search by specific date
