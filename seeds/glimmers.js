@@ -43,10 +43,24 @@ export async function seed(knex) {
     },
     {
       id: 6,
-      created_at: "2025-12-31 14:30:00",
+      created_at: "2024-12-31 14:30:00",
       updated_at: "2025-01-01 14:30:00",
       entry:
         "Went to the underground bar for Danish tapas and beers with Tom & Ingrid, turns out I quite like Danish bread that is more like a toasted cracker to me.",
+    },
+    {
+      id: 7,
+      created_at: "2025-01-01 14:30:00",
+      updated_at: "2025-01-03 14:30:00",
+      entry:
+        "I pushed 11 contributions to my Github after not coding for almost 2 weeks. It felt good to be a bit productive! :) I'm proud of myself.",
+    },
+    {
+      id: 8,
+      created_at: "2025-01-02 14:30:00",
+      updated_at: "2025-01-03 14:30:00",
+      entry:
+        "Visited the Danish Architecture Center today with Ingrid, I particularly enjoyed the Water is Coming exhibit on adapting life to the rise of water.",
     },
   ]);
 }
