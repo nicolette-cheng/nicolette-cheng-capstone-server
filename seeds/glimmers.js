@@ -62,5 +62,19 @@ export async function seed(knex) {
       entry:
         "Visited the Danish Architecture Center today with Ingrid, I particularly enjoyed the Water is Coming exhibit on adapting life to the rise of water.",
     },
+    {
+      id: 9,
+      created_at: "2025-01-03 14:30:00",
+      updated_at: "2025-01-04 14:30:00",
+      entry:
+        "I finally tried onigiri from COMÉ RICE Kitchen! The rice was excellent, their menchi katsu was very nicely fried and juicy as well.",
+    },
+    {
+      id: 10,
+      created_at: "2025-01-05 14:30:00",
+      updated_at: "2025-01-06 14:30:00",
+      entry:
+        "Went to the Louisiana Museum of Modern Art and really enjoyed their Ocean and Living Structures exhibits. Also had lunch at the cafe, got to try a Danish xmas lunch and my fave item was the duck breast. ",
+    },
   ]);
 }
