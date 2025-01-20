@@ -7,13 +7,13 @@ const index = async (req, res) => {
 
   try {
     const query = knex("glimmers")
-    .select(
-      "id",
-      "entry",
-      "stars_earned",
-      knex.raw("DATE_FORMAT(created_at, '%Y-%m-%d') as entry_date")  // Format date as YYYY-MM-DD
-    )
-    .orderBy("created_at", "desc");
+      .select(
+        "id",
+        "entry",
+        "stars_earned",
+        knex.raw("DATE_FORMAT(created_at, '%Y-%m-%d') as entry_date") // Format date as YYYY-MM-DD
+      )
+      .orderBy("created_at", "desc");
 
     if (date) {
       // Search by specific date
@@ -31,4 +31,29 @@ const index = async (req, res) => {
   }
 };
 
-export { index };
+const createGlimmerItem = async (req, res) => {
+  const { entry_date, entry } = req.body;
+
+  if (!entry_date || !entry?.trim()) {
+    return res.status(400).json({
+      message:
+        "Invalid date or missing entry in request body. Please ensure all fields are correctly entered.",
+    });
+  }
+
+  try {
+    const newGlimmer = {
+      entry_date,
+      entry,
+      stars_earned: 1  // Automatically set to 1 for each new entry
+    };
+
+    const [newGlimmerId] = await knex("glimmers").insert(newGlimmer);
+
+    res.status(201).json({ id: newGlimmerId, ...newGlimmer });
+  } catch (error) {
+    res.status(500).send(`Error creating new glimmer: ${error}`);
+  }
+};
+
+export { index, createGlimmerItem };
