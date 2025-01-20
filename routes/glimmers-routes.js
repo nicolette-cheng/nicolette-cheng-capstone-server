@@ -4,7 +4,7 @@ import express from "express";
 const router = express.Router();
 
 router.route("/").get(glimmerController.index)
-// .post(glimmerController.createGlimmerItem);
+.post(glimmerController.createGlimmerItem);
 
 // router.route("/:id").get(glimmerController.getSingleGlimmer).put(glimmerController.editGlimmerItem);
 
