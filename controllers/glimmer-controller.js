@@ -11,7 +11,7 @@ const index = async (req, res) => {
         "id",
         "entry",
         "stars_earned",
-        knex.raw("DATE_FORMAT(created_at, '%Y-%m-%d') as entry_date") // Format date as YYYY-MM-DD
+        knex.raw("DATE_FORMAT(created_at, '%Y-%m-%d') as created_at") // Format date as YYYY-MM-DD
       )
       .orderBy("created_at", "desc");
 
@@ -32,9 +32,9 @@ const index = async (req, res) => {
 };
 
 const createGlimmerItem = async (req, res) => {
-  const { entry_date, entry } = req.body;
+  const { created_at, entry } = req.body; // Changed from entry_date to created_at
 
-  if (!entry_date || !entry?.trim()) {
+  if (!created_at || !entry?.trim()) {
     return res.status(400).json({
       message:
         "Invalid date or missing entry in request body. Please ensure all fields are correctly entered.",
@@ -43,9 +43,9 @@ const createGlimmerItem = async (req, res) => {
 
   try {
     const newGlimmer = {
-      entry_date,
+      created_at,
       entry,
-      stars_earned: 1  // Automatically set to 1 for each new entry
+      stars_earned: 1, // Automatically set to 1 for each new entry
     };
 
     const [newGlimmerId] = await knex("glimmers").insert(newGlimmer);
